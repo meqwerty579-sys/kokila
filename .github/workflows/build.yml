@@ -44,6 +44,9 @@ jobs:
         # Run downloader to configure folders (uses mock files if server-limits exceed)
         ./download_models.sh || echo "Network limit reached, assets verified via placeholder sizes for runner safety."
 
+    - name: Generate Gradle Wrapper
+      run: gradle wrapper
+
     - name: Grant Gradle execute permission
       run: chmod +x gradlew
 
