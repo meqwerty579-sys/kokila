@@ -36,6 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.KokilaApplication
 import com.example.ui.designsystem.Spacing
 import com.example.ui.viewmodel.MainViewModel
+import com.example.ui.viewmodel.ModelViewModel
 import kotlinx.coroutines.*
 import kotlin.math.PI
 import kotlin.math.sin
@@ -43,6 +44,9 @@ import kotlin.math.sin
 @Composable
 fun PlaygroundScreen(
     viewModel: MainViewModel = viewModel(
+        factory = (LocalContext.current.applicationContext as KokilaApplication).appContainer.viewModelFactory
+    ),
+    modelViewModel: ModelViewModel = viewModel(
         factory = (LocalContext.current.applicationContext as KokilaApplication).appContainer.viewModelFactory
     )
 ) {
@@ -52,6 +56,7 @@ fun PlaygroundScreen(
     val speedRate by viewModel.speedRate.collectAsStateWithLifecycle()
     val vocalMode by viewModel.vocalMode.collectAsStateWithLifecycle()
     val isSynthesizing by viewModel.isSynthesizing.collectAsStateWithLifecycle()
+    val voiceModels by modelViewModel.voiceModels.collectAsStateWithLifecycle()
     
     val coroutineScope = rememberCoroutineScope()
     // Local reference to the playing job so we can cancel it directly
@@ -480,7 +485,7 @@ fun PlaygroundScreen(
                     ) {
                         Icon(Icons.Rounded.RecordVoiceOver, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                         Text(
-                            text = "Engine Vocal Architecture Profile",
+                            text = "Voice Profiles",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onSurface
@@ -490,12 +495,9 @@ fun PlaygroundScreen(
                     Spacer(modifier = Modifier.height(Spacing.m))
 
                     // Mode selections
-                    val vocalArchitectures = listOf(
-                        Triple("Warm Synth", Icons.Rounded.RecordVoiceOver, "Natural & comforting voice model"),
-                        Triple("Classic Robot", Icons.Rounded.SmartToy, "Futuristic vocoder synthesis"),
-                        Triple("Space Formant", Icons.Rounded.Hearing, "Expansive multi-resonance filter"),
-                        Triple("Deep Bass", Icons.Rounded.GraphicEq, "Sub-octave rich glottal generator")
-                    )
+                    val vocalArchitectures = voiceModels.map { voice ->
+                        Triple(voice.id, Icons.Rounded.RecordVoiceOver, "${voice.name} - ${voice.info}")
+                    }
 
                     Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         vocalArchitectures.forEach { (mode, icon, desc) ->

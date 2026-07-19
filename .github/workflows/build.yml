@@ -44,6 +44,10 @@ jobs:
         # Run downloader to configure folders (uses mock files if server-limits exceed)
         ./download_models.sh || echo "Network limit reached, assets verified via placeholder sizes for runner safety."
 
+    - name: Generate debug.keystore
+      run: |
+        keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "C=US, O=Android, CN=Android Debug"
+
     - name: Generate Gradle Wrapper
       run: gradle wrapper
 
