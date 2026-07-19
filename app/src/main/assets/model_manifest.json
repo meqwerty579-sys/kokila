@@ -1,0 +1,11 @@
+{
+  "models": [
+    {
+      "id": "vits-en-gigaspeech",
+      "version": "1.0.0",
+      "sha256": "4b82f7169f44e112cb927bb137a85e65d21a2be0bb347101889417937d3637e7",
+      "language": "en",
+      "sizeMb": 38
+    }
+  ]
+}
