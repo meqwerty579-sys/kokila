@@ -31,7 +31,7 @@ class TestKokilaTtsService : KokilaTtsService() {
 }
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [36])
+@Config(sdk = [34])
 class TtsEngineTest {
 
     private lateinit var context: Context
